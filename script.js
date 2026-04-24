@@ -1,8 +1,36 @@
 const campaigns = [
-    { id: 1, title: "Educate the Girl Child", desc: "Providing secondary education funds for girls.", purpose: "Provide financial aid and learning resources to girls in rural areas.", goal: 500, reached: 375, color: "#f8bbd0" },
-    { id: 2, title: "Tech Mentorship 2024", desc: "Connecting female students with industry leaders.", purpose: "Bridge the gender gap in technology through pairing with mentors.", goal: 200, reached: 80, color: "#e1bee7" },
-    { id: 3, title: "Sanitary Hygiene Drive", desc: "Distributing hygiene kits in urban slums.", purpose: "Focuses on menstrual health awareness and sustainable products.", goal: 1000, reached: 900, color: "#fce4ec" },
-    { id: 4, title: "Start-Up Seed Fund", desc: "Providing interest-free loans to female founders.", purpose: "Empowering women to become job creators.", goal: 50, reached: 12, color: "#d1c4e9" }
+    { 
+        id: 1, 
+        title: "Educate the Girl Child", 
+        desc: "Providing secondary education funds for girls.", 
+        purpose: "Our mission is to break the cycle of poverty through education.",
+        longDesc: "• Providing full scholarships for secondary school tuition.<br>• Supplying essential learning kits, books, and uniforms.<br>• Establishing community mentorship programs for career guidance.",
+        goal: 500, reached: 375, color: "#f8bbd0" 
+    },
+    { 
+        id: 2, 
+        title: "Tech Mentorship 2024", 
+        desc: "Connecting female students with industry leaders.", 
+        purpose: "Bridging the gender gap in the technology sector.",
+        longDesc: "• One-on-one coding bootcamps with industry experts.<br>• Exclusive networking sessions with Top Tech companies.<br>• Internship placement assistance for final year students.",
+        goal: 200, reached: 80, color: "#e1bee7" 
+    },
+    { 
+        id: 3, 
+        title: "Sanitary Hygiene Drive", 
+        desc: "Distributing hygiene kits in urban slums.", 
+        purpose: "Promoting health, dignity, and menstrual awareness.",
+        longDesc: "• Distribution of eco-friendly and sustainable hygiene products.<br>• Conducting medical workshops led by female health professionals.<br>• Setting up local disposal units for better community sanitation.",
+        goal: 1000, reached: 900, color: "#fce4ec" 
+    },
+    { 
+        id: 4, 
+        title: "Start-Up Seed Fund", 
+        desc: "Providing interest-free loans to female founders.", 
+        purpose: "Empowering women to become independent job creators.",
+        longDesc: "• Offering zero-interest micro-loans for initial setup costs.<br>• Providing legal assistance for business registration.<br>• Access to a network of investors and marketing consultants.",
+        goal: 50, reached: 12, color: "#d1c4e9" 
+    }
 ];
 
 let currentUser = {
@@ -13,7 +41,6 @@ let currentUser = {
 };
 
 window.onload = function() {
-    console.log("System Ready. Current User:", currentUser.name);
     renderCampaigns();
 };
 
@@ -86,7 +113,15 @@ function openModal(id) {
     if(!c) return;
 
     document.getElementById('modal-title').innerText = c.title;
-    document.getElementById('modal-purpose').innerText = c.purpose;
+    
+    // We use .innerHTML to make sure the <br> tags render correctly
+    const modalPurpose = document.getElementById('modal-purpose');
+    modalPurpose.innerHTML = `
+        <p style="font-weight: bold; color: #9c27b0; margin-bottom: 12px;">${c.purpose}</p>
+        <div style="text-align: left; line-height: 1.6; font-size: 1rem; color: #333; background: #f9f9f9; padding: 15px; border-radius: 8px; border-left: 5px solid #e91e63;">
+            ${c.longDesc}
+        </div>
+    `;
     
     const actionArea = document.getElementById('modal-action-area');
     actionArea.innerHTML = `<button class="btn-support" onclick="joinCampaign(${c.id})">Join This Campaign</button>`;
@@ -112,7 +147,6 @@ function joinCampaign(id) {
     .then(response => response.text())
     .then(data => {
         if (data.trim() === "success") {
-            // Updated to show Donation Demo after success
             showDonationDemo(campaign);
             campaign.reached += 1;
             renderCampaigns();
@@ -125,7 +159,6 @@ function joinCampaign(id) {
     .catch(err => console.error("Enrollment error:", err));
 }
 
-/* --- NEW DONATION DEMO FUNCTION --- */
 function showDonationDemo(campaign) {
     const actionArea = document.getElementById('modal-action-area');
     const modalTitle = document.getElementById('modal-title');
